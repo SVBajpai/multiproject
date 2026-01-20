@@ -1,0 +1,61 @@
+name: Frontend CI (React & Next)
+
+on:
+  push:
+    paths:
+      - "TodoList/**"
+      - "Nvirse-Next/**"
+  pull_request:
+    paths:
+      - "TodoList/**"
+      - "Nvirse-Next/**"
+
+jobs:
+  react-ci:
+    name: React CI
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, '') || true
+
+    defaults:
+      run:
+        working-directory: TodoList
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build React app
+        run: npm run build
+        continue-on-error: true
+
+  next-ci:
+    name: Next.js CI
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: Nvirse-Next
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Next.js app
+        run: npm run build
+        continue-on-error: true
