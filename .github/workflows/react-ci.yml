@@ -4,7 +4,9 @@ on:
   push:
     branches:
       - main
-      - master
+
+permissions:
+  contents: read
 
 jobs:
   build:
@@ -13,6 +15,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          clean: true
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
